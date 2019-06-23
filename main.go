@@ -17,8 +17,9 @@ import (
 	"github.com/threatstream/agave"
 )
 
+// Version of Magenpot, not of Magento
 const Version = "v0.2.4"
-const AgaveApp = "Drupot"
+const AgaveApp = "Magenpot"
 
 type App struct {
 	Publish    chan []byte
@@ -31,7 +32,7 @@ type App struct {
 }
 
 func main() {
-	fmt.Println("///- Running Drupot")
+	fmt.Println("///- Running Magenpot")
 	fmt.Printf("///- %s\n", Version)
 
 	// All we take is a config file argument.
@@ -48,8 +49,8 @@ func main() {
 	app.SeenIP = make(map[string]bool)
 	app.Publish = make(chan []byte)
 
-	if app.Config.Drupal.NameRandomizer {
-		app.Config.Drupal.SiteName = randomdata.SillyName()
+	if app.Config.Magento.NameRandomizer {
+		app.Config.Magento.SiteName = randomdata.SillyName()
 	}
 
 	// TODO: Persist UUID. Maybe a command line flag to refresh or overwrite.
@@ -60,7 +61,7 @@ func main() {
 	app.SensorUUID = uuid.String()
 
 	if config.Hpfeeds.Enabled {
-		enableHpfeeds(app)
+		enableHpfeeds(&app)
 	}
 
 	if config.PublicIP.Enabled {
@@ -71,12 +72,12 @@ func main() {
 		app.SensorIP = ip
 	}
 
-	app.Agave = agave.NewClient(AgaveApp, config.Hpfeeds.Channel, app.SensorUUID, app.SensorIP, config.Drupal.Port)
+	app.Agave = agave.NewClient(AgaveApp, config.Hpfeeds.Channel, app.SensorUUID, app.SensorIP, config.Magento.Port)
 
 	// Load routes for the server
-	mux := routes(app)
+	mux := routes(&app)
 
-	addr := fmt.Sprintf(":%d", config.Drupal.Port)
+	addr := fmt.Sprintf(":%d", config.Magento.Port)
 	s := http.Server{
 		Addr:         addr,
 		Handler:      mux,
@@ -88,7 +89,7 @@ func main() {
 
 }
 
-func enableHpfeeds(app App) {
+func enableHpfeeds(app *App) {
 	c := app.Config.Hpfeeds
 	fmt.Printf("/- Connecting to hpfeeds server: %s\n", c.Host)
 	fmt.Printf("/-\tPort: %d\n", c.Port)

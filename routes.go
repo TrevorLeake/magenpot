@@ -11,10 +11,10 @@ import (
 
 var templates = template.Must(template.ParseGlob("templates/*"))
 
-const CVE20196340 = "CVE-2019-6340"
-const DrupalScan = "Drupal Scanner"
-const DrupalScanLogin = "Drupal Scanner - Login Page"
-const DrupalScanChangelog = "Drupal Scanner - CHANGELOG.txt"
+const CVE20196340 = "CVE-2019-6340" // What is this?
+const MagentoScan = "Magento Scanner"
+const MagentoScanLogin = "Magento Scanner - Login Page"
+const MagentoScanVersion = "Magento Scanner - Version"
 
 var (
 	Err422 = errors.New("The website encountered an unexpected error. Please try again later.")
@@ -27,9 +27,9 @@ type Page struct {
 	Username string
 }
 
-func NotFoundHandler(app App) func(w http.ResponseWriter, r *http.Request) {
+func NotFoundHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		recordAttack(app, r, DrupalScanChangelog)
+		recordAttack(app, r, MagentoScanVersion)
 		err := templates.ExecuteTemplate(w, "404.html", getHost(r))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -41,12 +41,12 @@ func NotFoundHandler(app App) func(w http.ResponseWriter, r *http.Request) {
 // CHANGELOG.txt is requested, return the appropriate Changelog file and flag
 // the IP. Otherwise, return the index page and check whether to record the
 // http.Request.
-func IndexHandler(app App) func(w http.ResponseWriter, r *http.Request) {
+func IndexHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		recordAttack(app, r, DrupalScan)
+		recordAttack(app, r, MagentoScan)
 		host := fmt.Sprintf("http://%s", app.SensorIP)
 		p := Page{
-			Title: app.Config.Drupal.SiteName,
+			Title: app.Config.Magento.SiteName,
 			Host:  host,
 		}
 		err := templates.ExecuteTemplate(w, "index.html", p)
@@ -56,7 +56,7 @@ func IndexHandler(app App) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func NodeHandler(app App) func(w http.ResponseWriter, r *http.Request) {
+func NodeHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		recordAttack(app, r, CVE20196340)
 		http.Error(w, Err422.Error(), http.StatusUnprocessableEntity)
@@ -69,11 +69,11 @@ func fileServe(w http.ResponseWriter, r *http.Request) {
 }
 
 // TODO: Randomize csrf token
-func loginHandler(app App) func(w http.ResponseWriter, r *http.Request) {
+func loginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		host := fmt.Sprintf("http://%s", app.SensorIP)
 		p := Page{
-			Title: app.Config.Drupal.SiteName,
+			Title: app.Config.Magento.SiteName,
 			Host:  host,
 		}
 		var err error
@@ -87,7 +87,7 @@ func loginHandler(app App) func(w http.ResponseWriter, r *http.Request) {
 
 			err = templates.ExecuteTemplate(w, "login-invalid.html", p)
 		} else {
-			recordAttack(app, r, DrupalScanLogin)
+			recordAttack(app, r, MagentoScanLogin)
 			err = templates.ExecuteTemplate(w, "login.html", p)
 		}
 		if err != nil {
@@ -97,7 +97,7 @@ func loginHandler(app App) func(w http.ResponseWriter, r *http.Request) {
 }
 
 // routes sets up the necessary http routing for the webapp.
-func routes(app App) *http.ServeMux {
+func routes(app *App) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", IndexHandler(app))
 	mux.HandleFunc("/core/", fileServe)
@@ -112,7 +112,7 @@ func routes(app App) *http.ServeMux {
 // recordRequest will parse the http.Request and put it into a normalized format
 // and then marshal to JSON. This can then be sent on an hpfeeds channel or
 // logged to a file directly.
-func recordAttack(app App, r *http.Request, signature string) {
+func recordAttack(app *App, r *http.Request, signature string) {
 	// Populate data to send
 	payload, err := app.Agave.NewHTTPAttack(signature, r)
 	if err != nil {
@@ -138,7 +138,7 @@ func recordAttack(app App, r *http.Request, signature string) {
 // recordRequest will parse the http.Request and put it into a normalized format
 // and then marshal to JSON. This can then be sent on an hpfeeds channel or
 // logged to a file directly.
-func recordCredentials(app App, r *http.Request, username string, password string) {
+func recordCredentials(app *App, r *http.Request, username string, password string) {
 	// Populate data to send
 	payload, err := app.Agave.NewCredentialAttack(r, username, password)
 	if err != nil {

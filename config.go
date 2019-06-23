@@ -7,19 +7,17 @@ import (
 )
 
 type AppConfig struct {
-	Drupal   *DrupalConfig
+	Magento  *MagentoConfig
 	Hpfeeds  *HpfeedsConfig
 	PublicIP *PublicIPConfig `toml:"fetch_public_ip"`
 }
 
-// DrupalConfig provides configuration for how to host the Drupal web app
+// MagentoConfig provides configuration for how to host the Magento web app
 // portion of the honeypot.
-// [drupal]
-type DrupalConfig struct {
-	Version               string // Version of Drupal to emulate
+// [magento]
+type MagentoConfig struct {
 	Port                  int
-	ChangelogEnabled      bool   `toml:"changelog_enabled"`
-	ChangelogFilepath     string `toml:"changelog_filepath"`
+	MagentoVersionText    string `toml:"magento_version_text"`
 	SiteName              string `toml:"site_name"`
 	NameRandomizer        bool   `toml:"name_randomizer"`
 	HeaderServer          string `toml:"header_server"`
