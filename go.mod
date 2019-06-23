@@ -1,4 +1,4 @@
-module github.com/d1str0/drupot
+module github.com/trevorjohnleake/magenpot
 
 require (
 	github.com/BurntSushi/toml v0.3.1
