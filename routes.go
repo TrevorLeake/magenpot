@@ -38,8 +38,8 @@ func NotFoundHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 }
 
 // IndexHandler provides static pages depending on the request. If
-// CHANGELOG.txt is requested, return the appropriate Changelog file and flag
-// the IP. Otherwise, return the index page and check whether to record the
+// magento_version is requested, return the configured magento_version_text and
+// flag the IP. Otherwise, return the index page and check whether to record the
 // http.Request.
 func IndexHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -53,13 +53,6 @@ func IndexHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-	}
-}
-
-func NodeHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		recordAttack(app, r, CVE20196340)
-		http.Error(w, Err422.Error(), http.StatusUnprocessableEntity)
 	}
 }
 
@@ -100,11 +93,11 @@ func loginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 func routes(app *App) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", IndexHandler(app))
+	mux.HandleFunc("/magento_version", NotFoundHandler(app))
+
 	mux.HandleFunc("/core/", fileServe)
 	mux.HandleFunc("/sites/", fileServe)
 	mux.HandleFunc("/logo.svg", fileServe)
-	mux.HandleFunc("/CHANGELOG.txt", NotFoundHandler(app))
-	mux.HandleFunc("/node/", NodeHandler(app))
 	mux.HandleFunc("/user/login", loginHandler(app))
 	return mux
 }
