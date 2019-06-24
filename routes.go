@@ -95,10 +95,8 @@ func routes(app *App) *http.ServeMux {
 	mux.HandleFunc("/", IndexHandler(app))
 	mux.HandleFunc("/magento_version", NotFoundHandler(app))
 
-	mux.HandleFunc("/core/", fileServe)
-	mux.HandleFunc("/sites/", fileServe)
-	mux.HandleFunc("/logo.svg", fileServe)
-	mux.HandleFunc("/user/login", loginHandler(app))
+	mux.HandleFunc("/customer/account/login/", loginHandler(app))
+	mux.HandleFunc("/pub/", fileServe)
 	return mux
 }
 

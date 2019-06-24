@@ -14,3 +14,15 @@
 magenpot
 *.swp
 config.toml
+
+
+
+public/pub/_errors
+public/pub/_media
+public/pub/_opt
+public/pub/_others
+public/pub/static/_adminhtml
+public/pub/static/frontend/Magento/_luma
+public/pub/static/.htaccess
+
+notes.txt
