@@ -14,6 +14,7 @@ var templates = template.Must(template.ParseGlob("templates/*"))
 const CVE20196340 = "CVE-2019-6340" // What is this?
 const MagentoScan = "Magento Scanner"
 const MagentoScanLogin = "Magento Scanner - Login Page"
+const MagentoScanAdminLogin = "Magento Scanner - Admin Login Page"
 const MagentoScanVersion = "Magento Scanner - Version"
 
 var (
@@ -79,7 +80,7 @@ func adminLoginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 
 			err = templates.ExecuteTemplate(w, "admin-login-invalid.html", p)
 		} else {
-			recordAttack(app, r, MagentoScanLogin)
+			recordAttack(app, r, MagentoScanAdminLogin)
 			err = templates.ExecuteTemplate(w, "admin-login.html", p)
 		}
 		if err != nil {
@@ -119,6 +120,7 @@ func loginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 // routes sets up the necessary http routing for the webapp.
 func routes(app *App) *http.ServeMux {
 	mux := http.NewServeMux()
+	// TODO: Smart regexes for routing.
 	mux.HandleFunc("/", IndexHandler(app))
 	mux.HandleFunc("/magento_version", NotFoundHandler(app))
 	mux.HandleFunc("/customer/account/login/", loginHandler(app))
