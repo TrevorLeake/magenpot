@@ -123,9 +123,9 @@ func routes(app *App) *http.ServeMux {
 	// TODO: Smart regexes for routing.
 	mux.HandleFunc("/", IndexHandler(app))
 	mux.HandleFunc("/magento_version", NotFoundHandler(app))
-	mux.HandleFunc("/customer/account/login/", loginHandler(app))
-	mux.HandleFunc("/admin_access/", adminLoginHandler(app))
 	mux.HandleFunc("/pub/", fileServe)
+	mux.HandleFunc("/admin_access/", adminLoginHandler(app))      // Any un-covered route
+	mux.HandleFunc("/customer/account/login/", loginHandler(app)) // Anything containing login
 	return mux
 }
 
