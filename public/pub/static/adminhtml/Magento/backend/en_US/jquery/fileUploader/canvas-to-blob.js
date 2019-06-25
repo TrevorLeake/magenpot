@@ -1,0 +1,1 @@
+/var/www/html/magento/lib/web/jquery/fileUploader/canvas-to-blob.js

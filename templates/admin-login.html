@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+    <head >
+        <script>
+    var BASE_URL = '/admin_access/admin/index/index/key/c01bb56d30a379a5629481694f9ab4b80fbb6c8b987e9ffe42a38d58fc9e580d/';
+    var FORM_KEY = '1YHfhJV4YmZjDu8M';
+    var require = {
+        "baseUrl": "/pub/static/adminhtml/Magento/backend/en_US"
+    };
+</script>
+        <meta charset="utf-8"/>
+<meta name="robots" content="NOINDEX,NOFOLLOW"/>
+<meta name="title" content="Magento Admin"/>
+<meta name="viewport" content="width=1024"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Magento Admin</title>
+<link  rel="stylesheet" type="text/css"  media="all" href="/pub/static/adminhtml/Magento/backend/en_US/extjs/resources/css/ext-all.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="/pub/static/adminhtml/Magento/backend/en_US/extjs/resources/css/ytheme-magento.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="/pub/static/adminhtml/Magento/backend/en_US/jquery/jstree/themes/default/style.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="/pub/static/adminhtml/Magento/backend/en_US/css/styles.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="/pub/static/adminhtml/Magento/backend/en_US/MSP_ReCaptcha/css/msp_recaptcha.css" />
+<link  rel="icon" type="image/x-icon" href="/pub/static/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<link  rel="shortcut icon" type="image/x-icon" href="/pub/static/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<script  type="text/javascript"  src="/pub/static/adminhtml/Magento/backend/en_US/requirejs/require.js"></script>
+<script  type="text/javascript"  src="/pub/static/adminhtml/Magento/backend/en_US/mage/requirejs/mixins.js"></script>
+<script  type="text/javascript"  src="/pub/static/adminhtml/Magento/backend/en_US/requirejs-config.js"></script>
+<script  type="text/javascript"  src="https://www.google.com/recaptcha/api.js"></script>
+            </head>
+    <body data-container="body" data-mage-init='{"loaderAjax": {}, "loader": { "icon": "/pub/static/adminhtml/Magento/backend/en_US/images/loader-2.gif"}}' id="html-body" class="adminhtml-auth-login page-layout-admin-login">
+        <section class="page-wrapper">
+<script>
+    require.config({
+        map: {
+            '*': {
+                wysiwygAdapter: 'mage/adminhtml/wysiwyg/tiny_mce/tinymce4Adapter'
+            }
+        }
+    });
+</script>
+    <script>
+        require.config({
+            deps: [
+                'jquery',
+                'mage/translate',
+                'jquery/jquery-storageapi'
+            ],
+            callback: function ($) {
+                'use strict';
+
+                var dependencies = [],
+                    versionObj;
+
+                $.initNamespaceStorage('mage-translation-storage');
+                $.initNamespaceStorage('mage-translation-file-version');
+                versionObj = $.localStorage.get('mage-translation-file-version');
+
+
+                if (versionObj.version !== '233570405f1a3711b897a5e1a0263245720c154c') {
+                    dependencies.push(
+                        'text!js-translation.json'
+                    );
+
+                }
+
+                require.config({
+                    deps: dependencies,
+                    callback: function (string) {
+                        if (typeof string === 'string') {
+                            $.mage.translate.add(JSON.parse(string));
+                            $.localStorage.set('mage-translation-storage', string);
+                            $.localStorage.set(
+                                'mage-translation-file-version',
+                                {
+                                    version: '233570405f1a3711b897a5e1a0263245720c154c'
+                                }
+                            );
+                        } else {
+                            $.mage.translate.add($.localStorage.get('mage-translation-storage'));
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+
+
+
+<script>
+require([
+    "jquery",
+    "jquery/ui"
+], function($){
+
+    $.extend(true, $, {
+        calendarConfig: {
+            dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            dayNamesMin: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+            monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            infoTitle: "About the calendar",
+            firstDay: 0,
+            closeText: "Close",
+            currentText: "Go Today",
+            prevText: "Previous",
+            nextText: "Next",
+            weekHeader: "WK",
+            timeText: "Time",
+            hourText: "Hour",
+            minuteText: "Minute",
+            dateFormat: $.datepicker.RFC_2822,
+            showOn: "button",
+            showAnim: "",
+            changeMonth: true,
+            changeYear: true,
+            buttonImageOnly: null,
+            buttonImage: null,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            showWeek: false,
+            timeFormat: '',
+            showTime: false,
+            showHour: false,
+            showMinute: false,
+            serverTimezoneSeconds: 1561401889,
+            serverTimezoneOffset: -25200,
+            yearRange: '1919:2119'
+        }
+    });
+
+enUS = {"m":{"wide":["January","February","March","April","May","June","July","August","September","October","November","December"],"abbr":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}}; // en_US locale reference
+
+});
+</script>
+<header class="login-header">                        <a
+            href="/admin_access/admin/"
+            data-edition="Community Edition"            class="logo">
+            <img class="logo-img" src="/pub/static/adminhtml/Magento/backend/en_US/images/magento-logo.svg"
+            alt="Magento Admin Panel" title="Magento Admin Panel"/>
+        </a>
+    </header><div class="login-content">
+<form method="post" action="" id="login-form" data-mage-init='{"form": {}, "validation": {}}' autocomplete="off">
+    <fieldset class="admin__fieldset">
+        <legend class="admin__legend">
+            <span>Welcome, please sign in</span>
+        </legend><br/>
+        <input name="form_key" type="hidden" value="1YHfhJV4YmZjDu8M" />
+        <div class="admin__field _required field-username">
+            <label for="username" class="admin__field-label">
+                <span>Username</span>
+            </label>
+            <div class="admin__field-control">
+                <input id="username"
+                       class="admin__control-text"
+                       type="text"
+                       name="login[username]"
+                       autofocus
+                       value=""
+                       data-validate="{required:true}"
+                       placeholder="user name"
+                       autocomplete="off"
+                    />
+            </div>
+        </div>
+        <div class="admin__field _required field-password">
+            <label for="login" class="admin__field-label">
+                <span>Password</span>
+            </label>
+            <div class="admin__field-control">
+                <input id="login"
+                       class="admin__control-text"
+                       type="password"
+                       name="login[password]"
+                       data-validate="{required:true}"
+                       value=""
+                       placeholder="password"
+                       autocomplete="off"
+                    />
+            </div>
+        </div>
+                <div class="form-actions">
+            <div class="actions">
+    <button
+                class="action-login action-primary">
+        <span>Sign in</span>
+    </button>
+</div>
+<div class="links">
+<a class="action-forgotpassword" href="/admin_access/admin/auth/forgotpassword/">Forgot your password?</a>
+</div>
+        </div>
+    </fieldset>
+</form>
+</div><footer class="login-footer"><a class="link-copyright" href="http://magento.com" target="_blank" title="Magento"></a>
+Copyright &copy; 2019 Magento Commerce Inc. All rights reserved.</footer></section>    </body>
+</html>

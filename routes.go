@@ -61,6 +61,33 @@ func fileServe(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, path)
 }
 
+func adminLoginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		host := fmt.Sprintf("http://%s", app.SensorIP)
+		p := Page{
+			Title: app.Config.Magento.SiteName,
+			Host:  host,
+		}
+		var err error
+		if r.Method == "POST" {
+			username := r.PostFormValue("name")
+			password := r.PostFormValue("pass")
+			recordCredentials(app, r, username, password)
+
+			p.Username = username
+			p.Error = true
+
+			err = templates.ExecuteTemplate(w, "admin-login-invalid.html", p)
+		} else {
+			recordAttack(app, r, MagentoScanLogin)
+			err = templates.ExecuteTemplate(w, "admin-login.html", p)
+		}
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	}
+}
+
 // TODO: Randomize csrf token
 func loginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -94,8 +121,8 @@ func routes(app *App) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", IndexHandler(app))
 	mux.HandleFunc("/magento_version", NotFoundHandler(app))
-
 	mux.HandleFunc("/customer/account/login/", loginHandler(app))
+	mux.HandleFunc("/admin_access/", adminLoginHandler(app))
 	mux.HandleFunc("/pub/", fileServe)
 	return mux
 }
