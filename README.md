@@ -16,8 +16,7 @@ Magenpot supports go modules.
 A simple way to identify the version of Magento a site (example.com) is running, is to try the the magento_version path (example.com/magento_version). This will not always work, as the file doesn't have to be served.
 
 ## Configuration
-`config.toml.example` contains an example of *all* currently available
-configuration options.
+`config.toml.example` contains an example of *all* currently available configuration options.
 
 ### Magento
     [magento]
@@ -56,3 +55,5 @@ If enabled, Magenpot will attempt to fetch the public IP of itself from the list
 ### Example Magento Sites
 Try appending the "magento_version" path to check these sites' versions.
 * https://www.bulkpowders.co.uk/
+
+Please be nice to these sites. :)
