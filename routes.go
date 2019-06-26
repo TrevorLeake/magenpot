@@ -26,11 +26,12 @@ type Page struct {
 	Host     string
 	Error    bool
 	Username string
+	Version  string
 }
 
 func NotFoundHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		recordAttack(app, r, MagentoScanVersion)
+		recordAttack(app, r, MagentoScan)
 		err := templates.ExecuteTemplate(w, "404.html", getHost(r))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -89,6 +90,22 @@ func adminLoginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func versionHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		recordAttack(app, r, MagentoScanVersion)
+		host := fmt.Sprintf("http://%s", app.SensorIP)
+		p := Page{
+			Title:   app.Config.Magento.SiteName,
+			Version: app.Config.Magento.MagentoVersionText,
+			Host:    host,
+		}
+		err := templates.ExecuteTemplate(w, "magento_version.txt", p)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	}
+}
+
 // TODO: Randomize csrf token
 func loginHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -122,7 +139,7 @@ func routes(app *App) *http.ServeMux {
 	mux := http.NewServeMux()
 	// TODO: Smart regexes for routing.
 	mux.HandleFunc("/", IndexHandler(app))
-	mux.HandleFunc("/magento_version", NotFoundHandler(app))
+	mux.HandleFunc("/magento_version", versionHandler(app))
 	mux.HandleFunc("/pub/", fileServe)
 	mux.HandleFunc("/admin_access/", adminLoginHandler(app))      // Any un-covered route
 	mux.HandleFunc("/customer/account/login/", loginHandler(app)) // Anything containing login
