@@ -1,18 +1,19 @@
 # Magenpot (Magento Honeypot)
 
+*Built as a detached fork from [Drupot](www.github.com/d1str0/Drupot) (Drupal honeypot).*
+
 ## Installation
 Magenpot supports go modules.
 
-`go get github.com/d1str0/Drupot`
+`go get github.com/trevorleake/magenpot`
 
 `go build`
 
 ## Running Magenpot
 `./magenpot -c config.toml`
 
-## Identifying a Magento Site's Version
-Assuming...
-A simple way to identify the verison of Magento a site (example.com) is running, is to try the the magentp_version path (example.com/magento_version). This is not foolproof, as we can make this file private.
+## Identifying the Magento Version
+A simple way to identify the version of Magento a site (example.com) is running, is to try the the magento_version path (example.com/magento_version). This will not always work, as the file doesn't have to be served.
 
 ## Configuration
 `config.toml.example` contains an example of *all* currently available
