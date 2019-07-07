@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"html/template"
 	"log"
@@ -11,15 +10,10 @@ import (
 
 var templates = template.Must(template.ParseGlob("templates/*"))
 
-const CVE20196340 = "CVE-2019-6340" // What is this?
 const MagentoScan = "Magento Scanner"
 const MagentoScanLogin = "Magento Scanner - Login Page"
 const MagentoScanAdminLogin = "Magento Scanner - Admin Login Page"
 const MagentoScanVersion = "Magento Scanner - Version"
-
-var (
-	Err422 = errors.New("The website encountered an unexpected error. Please try again later.")
-)
 
 type Page struct {
 	Title    string
@@ -27,16 +21,6 @@ type Page struct {
 	Error    bool
 	Username string
 	Version  string
-}
-
-func NotFoundHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		recordAttack(app, r, MagentoScan)
-		err := templates.ExecuteTemplate(w, "404.html", getHost(r))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	}
 }
 
 // IndexHandler provides static pages depending on the request. If
@@ -196,12 +180,4 @@ func recordCredentials(app *App, r *http.Request, username string, password stri
 	if app.Config.Hpfeeds.Enabled {
 		app.Publish <- buf
 	}
-}
-
-// getHost tries its best to return the request host.
-func getHost(r *http.Request) string {
-	r.URL.Scheme = "http"
-	r.URL.Host = r.Host
-
-	return r.URL.String()
 }
