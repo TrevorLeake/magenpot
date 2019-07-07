@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"html/template"
 	"log"
@@ -181,12 +180,4 @@ func recordCredentials(app *App, r *http.Request, username string, password stri
 	if app.Config.Hpfeeds.Enabled {
 		app.Publish <- buf
 	}
-}
-
-// getHost tries its best to return the request host.
-func getHost(r *http.Request) string {
-	r.URL.Scheme = "http"
-	r.URL.Host = r.Host
-
-	return r.URL.String()
 }
