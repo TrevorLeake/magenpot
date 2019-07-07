@@ -24,16 +24,6 @@ type Page struct {
 	Version  string
 }
 
-func NotFoundHandler(app *App) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		recordAttack(app, r, MagentoScan)
-		err := templates.ExecuteTemplate(w, "404.html", getHost(r))
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	}
-}
-
 // IndexHandler provides static pages depending on the request. If
 // magento_version is requested, return the configured magento_version_text and
 // flag the IP. Otherwise, return the index page and check whether to record the
