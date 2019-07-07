@@ -11,7 +11,6 @@ import (
 
 var templates = template.Must(template.ParseGlob("templates/*"))
 
-const CVE20196340 = "CVE-2019-6340" // What is this?
 const MagentoScan = "Magento Scanner"
 const MagentoScanLogin = "Magento Scanner - Login Page"
 const MagentoScanAdminLogin = "Magento Scanner - Admin Login Page"
