@@ -16,10 +16,6 @@ const MagentoScanLogin = "Magento Scanner - Login Page"
 const MagentoScanAdminLogin = "Magento Scanner - Admin Login Page"
 const MagentoScanVersion = "Magento Scanner - Version"
 
-var (
-	Err422 = errors.New("The website encountered an unexpected error. Please try again later.")
-)
-
 type Page struct {
 	Title    string
 	Host     string
